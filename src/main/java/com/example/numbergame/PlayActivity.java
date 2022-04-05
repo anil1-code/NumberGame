@@ -1,5 +1,6 @@
 package com.example.numbergame;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,25 +9,21 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.numbergame.RecyclerView.TransactionListItem;
 import com.google.android.material.button.MaterialButton;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlayActivity extends AppCompatActivity implements View.OnClickListener {
-    private final int mNumberOfTurns = 15;
+    private final int mNumberOfTurns = 6;
     private int mRemTurns = mNumberOfTurns;
 
     private final int mNumberOfWishes = 3;
     private int mRemWishes = 3;
 
-
     private double mCurrentScore = 0;
 
-    private final double mMaxBet = 100.34;
+    private final double mMaxBet = 10;
 
     private final int[] mNumIds = {R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight, R.id.nine, R.id.zero, R.id.decimal};
     private final List<TransactionListItem> transactionListItems = new ArrayList<>();
@@ -63,6 +60,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         mDropBtn = findViewById(R.id.drop_btn);
         mTransactionLayout = findViewById(R.id.transactions_layout);
         mRemTurnsTV = findViewById(R.id.rem_turns);
+        mRemTurnsTV.setText(String.valueOf(mRemTurns));
         mScoreTV = findViewById(R.id.score_text);
         fillDp();
         mDropBtn.setOnClickListener(new View.OnClickListener() {
@@ -74,10 +72,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                         throw new NumberFormatException();
                     }
                     boolean p = play(num);
+
                     View v = LayoutInflater.from(PlayActivity.this).inflate(R.layout.transaction_list_item, mTransactionLayout, false);
                     TextView btv = v.findViewById(R.id.bet_amt);
                     TextView wtv = v.findViewById(R.id.win_amt);
-                    TextView rwtv = v.findViewById(R.id.rem_add);
+                    TextView rmtv = v.findViewById(R.id.rem_add);
                     btv.setText("-" + num);
                     mCurrentScore -= num;
                     if(p) {
@@ -87,16 +86,21 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                     } else {
                         wtv.setText("+0");
                     }
-                    rwtv.setText(mRemWishes + "");
+                    rmtv.setText(mRemWishes + "");
                     mTransactionLayout.addView(v);
 
                     mDropAmt.setText("");
                     mRemTurns--;
-                    mRemTurnsTV.setText(mRemTurns + " turns");
-                    mScoreTV.setText(mCurrentScore+"");
-//                    String w = mCurrentScore + "";
-//                    w.substring()
-//                    if(w.length() > 4)
+                    mRemTurnsTV.setText(mRemTurns);
+                    mScoreTV.setText(mCurrentScore + "");
+
+                    if(mRemTurns == 0) {
+                        Intent intent = new Intent(PlayActivity.this, StartActivity.class);
+                        intent.putExtra("played", true);
+                        intent.putExtra("score", mCurrentScore);
+                        startActivity(intent);
+                        finish();
+                    }
                 } catch (NumberFormatException e) {
                     return;
                 }
@@ -162,5 +166,20 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         mDropAmt.append(btn.getText());
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(hasFocus) {
+            View decor = getWindow().getDecorView();
+            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                    View.SYSTEM_UI_FLAG_FULLSCREEN |
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            );
+        }
     }
 }

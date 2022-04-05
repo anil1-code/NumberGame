@@ -1,4 +1,4 @@
-package com.example.numbergame.RecyclerView;
+package com.example.numbergame;
 
 public class TransactionListItem {
     private final int mRemGrants;
