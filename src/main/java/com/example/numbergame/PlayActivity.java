@@ -91,7 +91,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
                     mDropAmt.setText("");
                     mRemTurns--;
-                    mRemTurnsTV.setText(mRemTurns);
+                    mRemTurnsTV.setText(mRemTurns + "");
                     mScoreTV.setText(mCurrentScore + "");
 
                     if(mRemTurns == 0) {
