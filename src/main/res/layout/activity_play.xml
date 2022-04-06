@@ -37,8 +37,111 @@
         android:layout_width="142.5dp"
         android:layout_height="250dp"
         android:src="@drawable/angel_icon"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/guide_hor"
         app:layout_constraintEnd_toEndOf="@id/guide_vert" />
+
+    <LinearLayout
+        android:id="@+id/star_container"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/angel"
+        app:layout_constraintEnd_toEndOf="@id/angel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/angel">
+
+        <LinearLayout
+            android:id="@+id/star_row_1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/star1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_baseline_star_24" />
+
+            <ImageView
+                android:id="@+id/star2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_baseline_star_24" />
+
+            <ImageView
+                android:id="@+id/star3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_baseline_star_24" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/star_row_2"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/star4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_baseline_star_24" />
+
+            <ImageView
+                android:id="@+id/star5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_baseline_star_24" />
+
+            <ImageView
+                android:id="@+id/star6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_baseline_star_24" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/star_row_3"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/star7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_baseline_star_24" />
+
+            <ImageView
+                android:id="@+id/star8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_baseline_star_24" />
+
+            <ImageView
+                android:id="@+id/star9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_baseline_star_24" />
+        </LinearLayout>
+    </LinearLayout>
 
     <include
         android:id="@+id/input_include"

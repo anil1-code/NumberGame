@@ -1,9 +1,18 @@
 package com.example.numbergame;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.media.Image;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,7 +26,7 @@ import java.util.List;
 public class PlayActivity extends AppCompatActivity implements View.OnClickListener {
     private final int mNumberOfTurns = 6;
     private int mRemTurns = mNumberOfTurns;
-
+    private boolean mAnimationRunning = false;
     private final int mNumberOfWishes = 3;
     private int mRemWishes = 3;
 
@@ -66,6 +75,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         mDropBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(mAnimationRunning) return;
                 try {
                     double num = Double.parseDouble(mDropAmt.getText().toString());
                     if(num <= 0 || num > mMaxBet) {
@@ -108,6 +118,54 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    private final int[] star_ids = {R.id.star1, R.id.star2, R.id.star3, R.id.star4, R.id.star5, R.id.star6, R.id.star7, R.id.star8, R.id.star9};
+
+    private void startStarAnimation() {
+        for(int id : star_ids) {
+            ImageView imageView = findViewById(id);
+            imageView.setScaleX(1);
+            imageView.setScaleY(1);
+            imageView.setTranslationX(0);
+            imageView.setTranslationY(0);
+            imageView.setAlpha(1.0f);
+        }
+        ImageView angelView = findViewById(R.id.angel);
+        angelView.setVisibility(View.VISIBLE);
+        findViewById(R.id.star_container).setVisibility(View.VISIBLE);
+
+        int limit = findViewById(R.id.star1).getTop();
+        ValueAnimator animation = ValueAnimator.ofFloat(0f, limit);
+        animation.setDuration(5000);
+        mAnimationRunning = true;
+        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator updatedAnimation) {
+                float animatedValue = (float)updatedAnimation.getAnimatedValue();
+                float fraction = animatedValue / 100;
+                for(int id : star_ids) {
+                    ImageView imageView = findViewById(id);
+                    imageView.setScaleX(1.0f - fraction);
+                    imageView.setScaleY(1.0f - fraction);
+                    imageView.setAlpha(1.0f - fraction);
+                    imageView.setTranslationY(-animatedValue);
+                }
+                angelView.setAlpha(Math.min(fraction, 1 - fraction) * 2);
+            }
+        });
+        animation.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mAnimationRunning = false;
+                angelView.setVisibility(View.INVISIBLE);
+                findViewById(R.id.star_container).setVisibility(View.INVISIBLE);
+            }
+        });
+        animation.start();
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.wish_granted_sound_effect);
+        mp.start();
+    }
+
     private final double[][] dp = new double[mNumberOfTurns + 1][mNumberOfTurns + 1];
     private void fillDp() {
         dp[1][1] = mMaxBet;
@@ -135,6 +193,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         if((mRemWishes == 0) || (mRemTurns > mRemWishes && dp[mRemTurns - 1][mRemWishes] + mCurrentScore - num < dp[mRemTurns - 1][mRemWishes - 1] + mCurrentScore + num)) {
             return false;
         }
+        startStarAnimation();
         return true;
     }
 
