@@ -18,6 +18,7 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        // startPlay
         MaterialButton startPlay = findViewById(R.id.start_playing_btn);
         startPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -27,6 +28,7 @@ public class StartActivity extends AppCompatActivity {
                 finish();
             }
         });
+        // if returned after playing show score
         Intent intent = getIntent();
         boolean played = intent.getBooleanExtra("played", false);
         if(played) {
@@ -36,7 +38,6 @@ public class StartActivity extends AppCompatActivity {
             LayoutInflater layoutInflaterAndroid = LayoutInflater.from(this);
             View view = layoutInflaterAndroid.inflate(R.layout.score_dialog_layout, null);
             builder.setView(view);
-//            builder.setCancelable(false);
             TextView scoreTV = view.findViewById(R.id.final_score_tv);
             scoreTV.setText("Final score: " + score);
             final AlertDialog alertDialog = builder.create();
@@ -51,6 +52,7 @@ public class StartActivity extends AppCompatActivity {
 
     }
 
+    // hide navigation and status bar
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
